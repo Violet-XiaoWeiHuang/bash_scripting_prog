@@ -27,7 +27,7 @@ done
 currentLevel=$totalLevel
 
 clear
-tput cup 0 0 
+tput cup 0 0
 
 echo "Owner   Group   Other   Filename"
 echo "-----   -----   -----   --------"
@@ -56,9 +56,8 @@ done
 lines=`tput lines`
 tput cup $(( $lines-2 )) 0
 echo "Valid commands: u(p) d(own) q(uit)"
-echo ""
 
-tput cup $(( $totalLevel*2 )) 24
+tput cup $(( $totalLevel*2+1 )) 24
 echo -n ""
 read string
 
