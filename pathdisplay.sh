@@ -44,7 +44,8 @@ do
             
             if [ $count = $currentLevel ]
             then
-                        ls -ld | awk '{print "   Links: " $2 " Owner: " $3 " Group: " $4 " Size: " $5 " Modified: " $6, $7, $8}'
+		    ls -ld | awk '{printf "  Links: %s  Owner: %s  Group: %s  Size: %s  Modified: %s %s %s\n", $2, $3, $4, $5, $6, $7, $8}'
+		   #ls -ld | awk '{print "   Links: " $2 " Owner: " $3 " Group: " $4 " Size: " $5 " Modified: " $6, $7, $8}'
 	    else
                         echo
 	    fi    
@@ -79,3 +80,5 @@ done	# end of while-loop
 
 tput cup $lines 0
 stty $oldsettings
+
+
