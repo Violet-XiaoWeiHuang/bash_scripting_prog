@@ -1,8 +1,8 @@
 #!/bin/bash
 if [[ $# > 1 ]]
 then
-            echo "Usage: pathdisplay [ dir-name ]" >&2 
-            exit 1
+	 echo "Usage: pathdisplay [ dir-name ]" >&2 
+         exit 1
 fi
             
 if [ ! -d $1 ]
@@ -14,8 +14,6 @@ fi
 totalLevel=1
 cd $1
 path=$PWD
- 
-#echo $path
  
 while [ $PWD != "/" ]
 do
@@ -46,13 +44,12 @@ do
             
             if [ $count = $currentLevel ]
             then
-                        ls -ld | awk ' {print "   Links: " $2 " Owner: " $3 " Group: " $4 " Size: " $5 " Modified: " $6, $7, $8}'
-            fi
-                        echo ""
-            (( count++ ))
+                        ls -ld | awk '{print "   Links: " $2 " Owner: " $3 " Group: " $4 " Size: " $5 " Modified: " $6, $7, $8}'
+	    else
+                        echo
+	    fi    
+	    (( count++ ))
 done
- 
-echo "totalLevel: $totalLevel"
  
 lines=`tput lines`
 tput cup $(( $lines-2 )) 0
@@ -61,17 +58,24 @@ echo "Valid commands: u(p) d(own) q(uit)"
 tput cup $(( $currentLevel*2+1 )) 24
 }           # end of displayPath()             
  
+oldsettings=$(stty -g)
+stty -icanon min 1 time 0 -icrnl -echo
+key=
+while [ "$key" != "q" ]
+do
+	displayPath
+	key=$(dd bs=3 count=1 2> /dev/null)	
+	if [[ "$key" = "u" && $currentLevel > 1 ]]
+	then
+		(( currentLevel-- ))
+		tput cuu 2
+	elif [[ "$key" = "d" && $currentLevel < $totalLevel ]]
+	then
+		(( currentLevel++ ))
+		tput cud 2
+	fi
  
-#key=
-#while [ "$key" != "q" ]
-#do
- 
-displayPath
-read string
- 
- 
-# tput cup $(( $totalLevel*2+1 )) 24
-# echo -n ""
-# read string
- 
-#done # end of while-loop
+done	# end of while-loop
+
+tput cup $lines 0
+stty $oldsettings
