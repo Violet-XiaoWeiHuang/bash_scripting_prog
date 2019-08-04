@@ -44,7 +44,7 @@ do
             
             #echo "${perFormat}$dir"
 	    dir_short=$( echo $dir | cut -c1-$(( $columns-24 )) )
-	    printf "%s%s\n" "$perFormat" "$dir_short"
+	    printf "%s%s\n" "$perFormat" "$dir_short"		    
 
             if [ $count = $currentLevel ]
             then
@@ -57,9 +57,10 @@ do
 done
  
 lines=`tput lines`
-tput cup $(( $lines-2 )) 0
-echo "Valid commands: u(p) d(own) q(uit)"
- 
+tput cup $(( $lines-4 )) 0
+echo "Valid keys: k (up), j (down): move between filenames"
+echo "            h (left), l (right): move between permissions"
+echo "            r, w, x, -: change permissions;   q: quit"
 tput cup $(( $currentLevel*2+1 )) 24
 }           # end of displayPath()             
  
