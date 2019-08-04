@@ -33,7 +33,8 @@ echo ""
  
 cd $path	# go to the specified directory 
 count=1		# compare to the currentLevel to deplay the extra infor or nor
- 
+columns=`tput cols`
+
 for dir in / $(pwd | tr '/' ' ')
 do
             cd $dir             # get access to specified dir
@@ -41,8 +42,10 @@ do
             perFormat=$( ls -ld `pwd` | sed 's/  */ /g' | cut -d ' ' -f1 )
             perFormat=$( echo $perFormat | sed 's/^d//' | sed 's/\.$//' | sed -r 's/(.)(.)(.)(.)(.)(.)(.)(.)(.)/\1 \2 \3   \4 \5 \6   \7 \8 \9   /' )
             
-            echo "${perFormat}$dir"
-            
+            #echo "${perFormat}$dir"
+	    dir_short=$( echo $dir | cut -c1-$(( $columns-24 )) )
+	    printf "%s%s\n" "$perFormat" "$dir_short"
+
             if [ $count = $currentLevel ]
             then
 		    ls -ld | awk '{printf "  Links: %s  Owner: %s  Group: %s  Size: %s  Modified: %s %s %s\n", $2, $3, $4, $5, $6, $7, $8}'
