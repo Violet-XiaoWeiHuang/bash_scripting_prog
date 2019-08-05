@@ -23,7 +23,8 @@ do
 done
  
 currentLevel=$totalLevel
- 
+currentCol=24   # identify the initiatial cursor place is on the 24th column
+
 displayPath(){
 clear
  
@@ -61,11 +62,10 @@ tput cup $(( $lines-4 )) 0
 echo "Valid keys: k (up), j (down): move between filenames"
 echo "            h (left), l (right): move between permissions"
 echo "            r, w, x, -: change permissions;   q: quit"
-tput cup $(( $currentLevel*2+1 )) 24
+tput cup $(( $currentLevel*2+1 )) $currentCol
 }           # end of displayPath()             
 
 
-currentCol=25	# identify the initiatial cursor place is on the 25th column  
 countCol=1		# compare to the currentCol to deplay the extra infor or nor
 
 oldsettings=$(stty -g)
@@ -84,9 +84,16 @@ do
 	then
 		(( currentLevel++ ))
 		tput cud 2
-	# elif [[   ]]
-	# then
-	
+	elif [[ "$key" = "h" && $currentCol > 1 ]]
+	then
+		if [[ $currentCol = 24 || $currentCol = 16 || $currentCol = 8 ]]
+		then
+			currentCol=$(($currentCol-4))
+			tput cub 4
+		else
+			currentCol=$(($currentCol-2))
+			tput cub 2
+		fi	
 	fi
  
 done	# end of while-loop
