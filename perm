@@ -49,6 +49,7 @@ do
 
 	if [ $count = $currentLevel ]
 	then
+		filePath=$PWD
 	ls -ld | awk '{printf "  Links: %s  Owner: %s  Group: %s  Size: %s  Modified: %s %s %s\n", $2, $3, $4, $5, $6, $7, $8}'
 	#ls -ld | awk '{print "   Links: " $2 " Owner: " $3 " Group: " $4 " Size: " $5 " Modified: " $6, $7, $8}'
 	else
@@ -105,12 +106,44 @@ do
 			currentCol=$(($currentCol+2))
 #			tput cuf 2
 		fi
-
+	elif [[ "$key" = "r" ]]
+	then
+		case $currentCol in 
+			0)	chmod u+r $filePath 2> /dev/null;;
+			8)	chmod g+r $filePath 2> /dev/null;;
+			16)	chmod o+r $filePath 2> /dev/null;;
+		esac
+	elif [[ "$key" = "w" ]]
+	then
+		case $currentCol in 
+			2)	chmod u+w $filePath 2> /dev/null;;
+			10)	chmod g+w $filePath 2> /dev/null;;
+			18)	chmod o+w $filePath 2> /dev/null;;
+		esac
+	elif [[ "$key" = "x" ]]
+	then
+		case $currentCol in 
+			4)	chmod u+x $filePath 2> /dev/null;;
+			12)	chmod g+x $filePath 2> /dev/null;;
+			20)	chmod o+x $filePath 2> /dev/null;;
+		esac
+	elif [[ "$key" = "-"  ]]
+	then
+		case $currentCol in 
+		0)	chmod u-r $filePath 2> /dev/null;;
+		8)	chmod g-r $filePath 2> /dev/null;;
+		16)	chmod o-r $filePath 2> /dev/null;;
+		2)	chmod u-w $filePath 2> /dev/null;;
+		10)	chmod g-w $filePath 2> /dev/null;;
+		18)	chmod o-w $filePath 2> /dev/null;;
+		4)	chmod u-x $filePath 2> /dev/null;;
+		12)	chmod g-x $filePath 2> /dev/null;;
+		20)	chmod o-x $filePath 2> /dev/null;;
+		esac	
 	fi
 
-tput cup $(( $lines-6 )) 0
-echo "current col $currentCol"
 
+tput cup $(( $lines-6 )) 0
 
 done	# end of while-loop
 
