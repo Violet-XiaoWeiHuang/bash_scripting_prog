@@ -76,26 +76,42 @@ do
 	displayPath
 	key=$(dd bs=3 count=1 2> /dev/null)	
 	
-	if [[ "$key" = "k" && $currentLevel > 1 ]]
+	if [[ "$key" = "k" && $currentLevel -gt 1 ]]
 	then
 		(( currentLevel-- ))
-		tput cuu 2
+#		tput cuu 2
 	elif [[ "$key" = "j" && $currentLevel < $totalLevel ]]
 	then
 		(( currentLevel++ ))
-		tput cud 2
-	elif [[ "$key" = "h" && $currentCol > 1 ]]
+#		tput cud 2
+	elif [[ "$key" = "h" && $currentCol -gt 1 ]]
 	then
 		if [[ $currentCol = 24 || $currentCol = 16 || $currentCol = 8 ]]
 		then
 			currentCol=$(($currentCol-4))
-			tput cub 4
+#			tput cub 4
 		else
 			currentCol=$(($currentCol-2))
-			tput cub 2
+#			tput cub 2
 		fi	
+	
+	elif [[ "$key" = "l" && $currentCol -lt 24 ]]
+	then 
+		if [[ $currentCol = 4 || $currentCol = 12 || $currentCol = 20 ]]
+		then
+			currentCol=$(($currentCol+4))
+#			tput cuf 4
+		else
+			currentCol=$(($currentCol+2))
+#			tput cuf 2
+		fi
+
 	fi
- 
+
+tput cup $(( $lines-6 )) 0
+echo "current col $currentCol"
+
+
 done	# end of while-loop
 
 tput cup $lines 0
