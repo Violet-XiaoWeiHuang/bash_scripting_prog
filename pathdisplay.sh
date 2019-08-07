@@ -1,4 +1,19 @@
 #!/bin/bash
+
+# Assignment 1
+# Course:                UNX510
+# Family Name:           Huang
+# Given Name:            Xiaowei
+# Student Number:        133-717-165
+# Login name:            xhuang110
+# Professor:             Les Czegel
+# Due Date:              August 2, 2019
+#
+# I declare that the attached assignment is my own work in accordance with
+# Seneca Academic Policy.  No part of this assignment has been copied manually
+# or electronically from any other source (including web sites) or distributed
+# to other students.
+
 if [[ $# > 1 ]]
 then
 	 echo "Usage: pathdisplay [ dir-name ]" >&2 
@@ -11,10 +26,15 @@ then
             exit 1
 fi
  
+if [[ $# = 0 ]]
+then
+	path=$PWD
+else 
+	cd $1
+	path=$PWD
+fi
+
 totalLevel=1
-cd $1
-path=$PWD
- 
 while [ $PWD != "/" ]
 do
             totalLevel=$(( $totalLevel + 1 ))
@@ -80,5 +100,3 @@ done	# end of while-loop
 
 tput cup $lines 0
 stty $oldsettings
-
-
